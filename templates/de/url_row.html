@@ -1,0 +1,41 @@
+<div id='DYNurl<!--$url_id-->'>
+	<div id='wrap<!--$url_id-->'>
+		 <table style="width:100%">
+		 	<tr>
+		 		<td>
+		 			<a onclick="delete_url('<!--$url_id-->',$('#dyndnsurl<!--$url_id-->').val(),$('#divnote<!--$url_id-->').text());" href='javascript:void(0);'><img src='/plugins/<!--$psubfolder-->/ico_delete.png' border='0' width='48' height='48'></a>
+		 		</td>
+		 		<td style="width:100%">
+	 				<input id='<!--$url_id-->'        name='<!--$url_id-->' 			 type='checkbox' <!--$url_use--> mac='<!--$url_id-->'>
+		 				<div class='ui-checkbox' style="width:100%">
+		 					<label for='<!--$url_id-->' class='ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off'>
+		 						<table style="width:100%">
+		 							<tr>
+		 								<td>
+			 								<nobr><b><!--$TXT_LABEL_NOTE--></b></nobr>
+		 								</td>
+		 								<td style="width:100%">
+		 									<div data-validation='length' data-validation-length='max512'  data-validation-error-msg='<!--$TXT_ERROR_ENTER_VALID_NAME-->' class='editable' contenteditable='true' style='width:99%; padding:2px; border: 1px solid #7e7e7e; border-radius: 5px; color: #AC208D; font-weight: bold; background-color: #e9e9e9; ' id='divnote<!--$url_id-->'><!--$url_note--></div>
+		 								</td>
+		 							</tr>
+		 							<tr>
+		 								<td>
+		 									<nobr><b><!--$TXT_LABEL_URL--></b></nobr>
+		 								</td>
+		 								<td style="width:100%">
+		 									<div contenteditable='true' style='width:99%; padding:2px; border: 1px solid #7e7e7e; border-radius: 5px; font-weight: bold; background-color: #e9e9e9; ' class='editable dyndns_refresher_url_ok' id='div<!--$url_id-->'><!--$url_info--></div>
+		 								</td>
+		 							</tr>
+		 						</table>
+		 					</label>
+						</div>
+		 			<input name='dyndnsurl<!--$url_id-->' id='dyndnsurl<!--$url_id-->' type='hidden' value='<!--$url_info-->'>
+		 			<input name='dyndnsurlnote<!--$url_id-->' id='dyndnsurlnote<!--$url_id-->' type='hidden' value='<!--$url_note-->'>
+ 					<input id='<!--$url_id-->Hidden'  name='<!--$url_id-->' 			 type='hidden' value='<!--$url_use_hidden-->'>
+		 		</td>
+		 	</tr>
+		</table>
+ 		 <script>
+ 		 	url_scripting('<!--$url_id-->','');</script>
+	</div>
+</div>

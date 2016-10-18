@@ -1,0 +1,369 @@
+									<div id="dialog"></div>
+									<link rel="stylesheet" href="/plugins/<!--$psubfolder-->/style.css">
+									<script src="/plugins/<!--$psubfolder-->/jquery-ui-1.9.2.custom.min.js"></script>
+									<center>
+										<img src="/system/images/icons/<!--$psubfolder-->/icon_64.png">
+										<br/><b><!--$MY_NAME--></b>
+										<table border=0 cellpadding=0>
+											<tr>
+												<td width="550px">
+													<script>
+														var new_appended=0;
+														var Base64 = 
+														{
+														    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+														    encode: function(input) 
+														    {
+														        var output = "";
+														        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+														        var i = 0;
+														        input = Base64._utf8_encode(input);
+														        while (i < input.length) 
+														        {
+																	    chr1 = input.charCodeAt(i++);
+													            chr2 = input.charCodeAt(i++);
+													            chr3 = input.charCodeAt(i++);
+													            enc1 = chr1 >> 2;
+													            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+													            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+													            enc4 = chr3 & 63;
+													            if (isNaN(chr2)) 
+													            {
+													                enc3 = enc4 = 64;
+													            } 
+													            else if (isNaN(chr3)) 
+													            {
+													                enc4 = 64;
+													            }
+													            output = output + this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) + this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+														        }
+														        return output;
+														    },
+																decode: function(input) 
+																{
+														        var output = "";
+														        var chr1, chr2, chr3;
+														        var enc1, enc2, enc3, enc4;
+														        var i = 0;
+																    input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+																		while (i < input.length) 
+																		{
+																		    enc1 = this._keyStr.indexOf(input.charAt(i++));
+														            enc2 = this._keyStr.indexOf(input.charAt(i++));
+														            enc3 = this._keyStr.indexOf(input.charAt(i++));
+														            enc4 = this._keyStr.indexOf(input.charAt(i++));
+														            chr1 = (enc1 << 2) | (enc2 >> 4);
+														            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+														            chr3 = ((enc3 & 3) << 6) | enc4;
+														            output = output + String.fromCharCode(chr1);
+														            if (enc3 != 64) 
+														            {
+														                output = output + String.fromCharCode(chr2);
+														            }
+														            if (enc4 != 64) 
+														            {
+														                output = output + String.fromCharCode(chr3);
+														            }
+														        }
+														        output = Base64._utf8_decode(output);
+														        return output;
+														    },
+														    _utf8_encode: function(string) 
+														    {
+														        string = string.replace(/\r\n/g, "\n");
+														        var utftext = "";
+														        for (var n = 0; n < string.length; n++) 
+														        {
+														            var c = string.charCodeAt(n);
+														            if (c < 128) 
+														            {
+														                utftext += String.fromCharCode(c);
+														            }
+														            else if ((c > 127) && (c < 2048)) 
+														            {
+														                utftext += String.fromCharCode((c >> 6) | 192);
+														                utftext += String.fromCharCode((c & 63) | 128);
+														            }
+														            else 
+														            {
+														                utftext += String.fromCharCode((c >> 12) | 224);
+														                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+														                utftext += String.fromCharCode((c & 63) | 128);
+														            }
+														        }
+														        return utftext;
+														    },
+														    _utf8_decode: function(utftext) 
+														    {
+														        var string = "";
+														        var i = 0;
+														        var c = c1 = c2 = 0;
+														        while (i < utftext.length) 
+														        {
+														            c = utftext.charCodeAt(i);
+														            if (c < 128) 
+														            {
+														                string += String.fromCharCode(c);
+														                i++;
+														            }
+														            else if ((c > 191) && (c < 224)) 
+														            {
+														                c2 = utftext.charCodeAt(i + 1);
+														                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+														                i += 2;
+														            }
+														            else 
+														            {
+														                c2 = utftext.charCodeAt(i + 1);
+														                c3 = utftext.charCodeAt(i + 2);
+														                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+														                i += 3;
+														            }
+														        }
+														        return string;
+														    }
+														}
+														function delete_url(url_string,url_info,url_note)
+														{
+															ConfirmDialog(url_string,'<br/><table><tr><td><img src="/plugins/<!--$psubfolder-->/ico_delete.png"></td><td><!--$TXT_CONFIRM_DIALOG_QUESTION--><br/><br/><center><b>"'+url_note+'"</b><br/><font face=Courier><small>'+decodeURIComponent(url_info)+'</small></font></center></td></tr></table><br/>','<!--$MY_NAME--> - <!--$TXT_CONFIRM_DIALOG_TITLE-->');
+														}
+														function refresh_strings()
+														{
+															var totalCheckboxes = $('input:checkbox').length;
+															if (totalCheckboxes < 2 )
+															{
+																$('#configured_urls').html('<b><!--$TXT_NO_URLS--><b>');
+															}
+															else
+															{
+																$('#configured_urls').html('<b><!--$TXT_URLS--><b>');
+															}
+														}
+														function url_scripting(valueID)
+														{
+															$('#dyndnsurl'+valueID).prop('value',encodeURIComponent($('#div'+valueID).text()));
+															$('#dyndnsurlnote'+valueID).prop('value',Base64.encode($('#divnote'+valueID).text()));
+
+															var new_url_inputtext	='<!--$TXT_ENTER_URL_HERE-->';
+															var new_note_inputtext	='<!--$TXT_ENTER_NOTE_HERE-->';
+															$('#'+valueID).click(function()
+															{
+																if (!$('#'+valueID).is(':checked'))
+																{
+																	$('label[for='+valueID+']').removeClass('ui-checkbox-on').addClass('ui-checkbox-off');
+																	$('#'+valueID+'Hidden').disabled = false;
+																	$('#'+valueID+'Hidden').val('off');
+																	return;
+																}
+																else
+																{
+																	$('label[for='+valueID+']').removeClass('ui-checkbox-off').addClass('ui-checkbox-on');
+																	$('#'+valueID+'Hidden').disabled = true;
+																	$('#'+valueID+'Hidden').val('on');
+																	return;
+																}
+															});
+															$('#div'+valueID).on('focus', function() { if ($('#div'+valueID).html()=== new_url_inputtext) { $('#div'+valueID).html('');$('#div'+valueID).css('width','99%'); $('#div'+valueID).removeClass('url_error'); }});
+															$('#divnote'+valueID).on('focus', function() { if ($('#divnote'+valueID).html()=== new_note_inputtext) { $('#divnote'+valueID).html('');$('#divnote'+valueID).css('width','99%'); }});
+															$('#divnote'+valueID).on('blur', function() { if ($('#divnote'+valueID).html()=== "") { $('#divnote'+valueID).html(new_note_inputtext);$('#divnote'+valueID).css('width','99%'); }});
+	
+															$('#divnote'+valueID).on('blur keyup paste input', function(event)
+															{
+																	$('#dyndnsurlnote'+valueID).prop('value',Base64.encode($('#divnote'+valueID).text()));
+															});
+															$('#div'+valueID).on('blur keyup input', function()
+															{
+															  var rule = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+																if(!rule.test($('#div'+valueID).text()) &&  $('#div'+valueID).html().length )
+																{
+																	$('#form-error-message').html('<!--$TXT_ERROR_ENTER_VALID_URL-->');
+																	var offset = $(this).offset();
+																	$('#form-error-message').css({'left': offset.left - 20, 'top': offset.top - 30, 'padding': '5px', 'border': '1px solid #FF0000', 'border-radius': '5px', 'color': '#FF0000', 'background-color': '#FFFFC0', 'z-index': 1000, 'position':'absolute'});
+																	$('#div'+valueID).css('width','99%');
+																	$('#div'+valueID).removeClass('dyndns_refresher_url_ok');
+																	$('#div'+valueID).addClass('dyndns_refresher_url_error');
+																	if (typeof x != 'undefined') 
+																	{ 
+																		clearTimeout(x); 
+																	}
+																	else
+																	{
+																		$('#form-error-message').show();
+																	}
+																	var x = setTimeout( function() { $('#form-error-message').hide(); }, 3000); 
+																	$('#dyndnsurl'+valueID).prop('value',' ');
+																}
+																else
+																{
+																	if (typeof x != 'undefined') 
+																	{ 
+																		clearTimeout(x); 
+																		$('#form-error-message').hide();
+
+																	}
+																	$('#dyndnsurl'+valueID).prop('value',encodeURIComponent($('#div'+valueID).text()));
+																	$('#div'+valueID).css('width','99%'); 
+																	$('#div'+valueID).removeClass('dyndns_refresher_url_error');
+																	$('#div'+valueID).addClass('dyndns_refresher_url_ok');
+																}
+ 																
+																if ($('#div'+valueID).html() === ""  ) 
+																{ 
+																	$('#div'+valueID).html(new_url_inputtext);
+																	$('#div'+valueID).removeClass('url_error');
+																	$('#div'+valueID).css('width','99%'); 
+																};
+
+																
+															});
+															$('#main_form').on('submit', function()
+															{
+																if($('#'+valueID).checked)
+																{
+																	$('#'+valueID+'Hidden').disabled = true;
+																} return;
+
+															});
+														}
+														function ConfirmDialog(url_id,message,title)
+														{
+															$('#dialog').html(message)
+																.prop('id','dialog')
+																.dialog(
+																{
+																	modal: true, title: title, zIndex: 10000, autoOpen: true,
+																	width: 'auto', resizable: false,
+																	buttons:
+																	{
+																		<!--$TXT_BTN_YES-->: function ()
+																		{
+																			$('#DYNurl'+url_id).empty();
+																			refresh_strings();
+																			$(this).dialog("close");
+																		},
+																		<!--$TXT_BTN_NO-->: function ()
+																		{
+																			$(this).dialog("close");
+																		}
+																	},
+																	close: function (event, ui)
+																	{
+																		$(this).hide();
+																	}
+																});
+														};
+													</script>
+													<center>
+														<div id="form-error-message" class="form-error-message">&nbsp;</div>
+													</center>
+												</td>
+											</tr>
+										</table>
+									</center>
+									<form method="post" data-ajax="false" name="main_form" id="main_form" action="./index.cgi">
+										<input type="hidden" name="saveformdata" value="1">
+										<div class="form-group">
+											<table class="formtable" border="0" width="100%">
+												<tr>
+													<td align="right" width="33%">
+														<b><!--$TXT_LABEL_INTERVAL--></b>
+												  </td>
+													<td>
+														<select id="INTERVAL" name="INTERVAL" data-mini="true">
+															<option value="0"  >0  </option>
+															<option value="1"  >1  </option>
+															<option value="3"  >3  </option>
+															<option value="5"  >5  </option>
+															<option value="10" >10 </option>
+															<option value="15" >15 </option>
+															<option value="30" >30 </option>
+															<option value="60" >60 </option>
+															<option value="1440">1440</option>
+														</select>
+														<SCRIPT> $("#INTERVAL").val(<!--$INTERVAL-->); </SCRIPT>
+													</td>
+													<td width="33%">
+												  </td>
+												</tr>
+												<tr>
+													<td colspan="3" width="90%">
+														<div style="cursor:default; id="url_div">
+															<fieldset id="urls">
+																<legend id="configured_urls"><B><!--$configured_urls--></B></legend>
+																<!--$url_select-->
+															</fieldset>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</form>
+									<p>
+										<center>
+											<a style="width:150px;" id="btnlog" data-icon="arrow-d" data-role="button" data-mini="true" target="log" href="/plugins/<!--$psubfolder-->/?mode=download_logfile"><!--$TXT_DOWNLOAD_LOGFILE--></a>
+											<br/>
+											<a id="btncancel" data-role="button" data-inline="true" data-mini="true" data-icon="delete" href="/admin/index.cgi"><!--$TXT_BTN_CANCEL--></a>
+											<button type="submit" form="main_form" id="btnsubmit" data-role="button" data-inline="true" data-mini="true" data-icon="check"><!--$TXT_BTN_SAVE--></button>
+										</center>
+									</p>
+									<script>
+										$.validate(
+										{
+											modules : 'security',
+											errorMessagePosition : $('#form-error-message')
+										});
+
+										$( document ).ready(function()
+										{
+												var new_url_inputtext	='<!--$TXT_ENTER_URL_HERE-->';
+												var new_note_inputtext	='<!--$TXT_ENTER_NOTE_HERE-->';
+												if ( new_appended == 0 )
+												{
+												$( '<div id=\'DYNurl'+'DYNURL_0'+'\'> 																																																																																																																																																																												\
+															<div id=\'wrap'+'DYNURL_0'+'\'>                                                                                                                                                                                                                                                                                                                                                         \
+																 <table style=\'width:100%\'>                                                                                                                                                                                                                                                                                                                                                         \
+																	<tr>                                                                                                                                                                                                                                                                                                                                                                                \
+																		<td>    																																																																																																																																																																																					\
+																			<img style=\' opacity: 0.3; filter: alpha(opacity=30);\' src=\'/plugins/<!--$psubfolder-->/ico_delete.png\' border=\'0\' width=\'48\' height=\'48\'></a>                                                                                                                                                                                                               					\
+																		</td>                                                                                                                                                                                                                                                                                                                                                                             \
+																		<td style=\'width:100%\'>                                                                                                                                                                                                                                                                                                                                                         \
+																			<input style=\'display:none\' id=\''+'DYNURL_0'+'\'        name=\''+'DYNURL_0'+'\' 			 type=\'checkbox\' data-cacheval=\'false\' unchecked mac=\''+'DYNURL_0'+'\'>                                                                                                                                                                                                            \
+																				<div class=\'ui-checkbox\'>                                                                                                                                                                                                                                                                                                                                                   \
+																					<label for=\''+'DYNURL_0'+'\' class=\'ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off\'>                                                                                                                                                                                                                                                               \
+																						<table style=\'width:100%\'>                                                                                                                                                                                                                                                                                                                                              \
+																							<tr>                                                                                                                                                                                                                                                                                                                                                                    \
+																 								<td>                                                                                                                                                                                                                                                                                                                                                                  \
+																	 								<nobr><b><!--$TXT_LABEL_NOTE--></b></nobr>                                                                                                                                                                                                                                                                                                                          \
+																 								</td>                                                                                                                                                                                                                                                                                                                                                                 \
+																								<td style=\'width:100%\'>                                                                                                                                                                                                                                                                                                                                             \
+																									<div data-validation=\'length\' data-validation-error-msg=\'<!--$TXT_ERROR_ENTER_VALID_NAME-->\' data-validation-length=\'max512\' class=\'editable\' contenteditable=\'true\' style=\'width:99%; padding:2px; border: 1px solid #7e7e7e; border-radius: 5px; color: #AC208D; font-weight: bold; background-color: #e9e9e9; \' id=\'divnote'+'DYNURL_0'+'\'>'+new_note_inputtext+'</div>    																				  \
+																								</td>                                                                                                                                                                                                                                                                                                                                                                 \
+																							</tr>                                                                                                                                                                                                                                                                                                                                                                   \
+																							<tr>                                                                                                                                                                                                                                                                                                                                                                    \
+																 								<td>                                                                                                                                                                                                                                                                                                                                                                  \
+																	 								<nobr><b><!--$TXT_LABEL_URL--></b></nobr>                                                                                                                                                                                                                                                                                                                           \
+																 								</td>                                                                                                                                                                                                                                                                                                                                                                 \
+																								<td style=\'width:100%\'>                                                                                                                                                                                                                                                                                                                                             \
+																									<div contenteditable=\'true\' style=\'width:99%; padding:2px; border: 1px solid #7e7e7e;  border-radius: 5px; font-weight: bold; background-color: #e9e9e9; \' class=\'editable dyndns_refresher_url_ok\'  id=\'div'+'DYNURL_0'+'\'>'+new_url_inputtext+'</div>    																																									  \
+																								</td>                                                                                                                                                                                                                                                                                                                                                                 \
+																							</tr>                                                                                                                                                                                                                                                                                                                                                                   \
+																						</table>                                                                                                                                                                                                                                                                                                                                                                  \
+																					</label>                                                                                                                                                                                                                                                                                                                                                                    \
+																				</div>                                                                                                                                                                                                                                                                                                                                                                        \
+																			<input name=\'dyndnsurl'+'DYNURL_0'+'\' id=\'dyndnsurl'+'DYNURL_0'+'\' type=\'hidden\' value=\''+new_url_inputtext+'\'>                                                                                                                                                                                                                                                         \
+																			<input name=\'dyndnsurlnote'+'DYNURL_0'+'\' id=\'dyndnsurlnote'+'DYNURL_0'+'\' type=\'hidden\' value=\'\'>                                                                                                                                                                                                                                                           					  \
+																			<input id=\''+'DYNURL_0'+'Hidden\'  name=\''+'DYNURL_0'+'\' 			 type=\'hidden\'     value=\'off\'>                                                                                                                                                                                                                                                                           \
+																		</td>                                                                                                                                                                                                                                                                                                                                                                             \
+																		<td>                                                                                                                                                                                                                                                                                                                                                                              \
+																			<div style=\'  margin-left:5px; background: url(/plugins/<!--$psubfolder-->/info.svg); background-position: bottom right; background-repeat: no-repeat; border-radius: 20px 5px 20px 5px ;border: 1px dotted #6AB3F8;padding: 5px; vertical-align:middle; cursor:default; height: 70px; \'><nobr><font color=\'#6AB3F8\'><i><!--$TXT_HINT_NEW_DYNURL--></i></font></nobr></div> \
+																		</td>                                                                                                                                                                                                                                                                                                                                                                             \
+																	</tr>                                                                                                                                                                                                                                                                                                                                                                               \
+																</table>                                                                                                                                                                                                                                                                                                                                                                              \
+															</div>																																																																																																																																																																																									\
+														</div>').appendTo($('#urls'));
+														url_scripting('DYNURL_0');
+														new_appended = 1;
+													}
+													refresh_strings();
+										});
+									</script>
