@@ -1,8 +1,8 @@
 <?php
 // LoxBerry DynDNS-Refresher Plugin 
 // Christian Woerstenfeld - git@loxberry.woerstenfeld.de
-// Version 0.1
-// 18.10.2016 00:22:24
+// Version 0.5
+// 31.10.2016 17:15:04
 
 // Configuration parameters
 $psubdir          =array_pop(array_filter(explode('/',pathinfo($_SERVER["SCRIPT_FILENAME"],PATHINFO_DIRNAME))));
@@ -87,7 +87,7 @@ if (isset($configured_urls))
 	else
 	{
 		$wget  = $cfg_array["BINARIES"]["WGET"];
-		$wget .= " -t 1 -T 10 -O /dev/null 2>&1";
+		$wget .= " -q -t 1 -T 10 -O /dev/null ";
 	}
 	while(list($configured_urls_url_key,$configured_urls_url_data) = each($configured_urls))
 	  {
@@ -109,7 +109,7 @@ if (isset($configured_urls))
 				}
 				else
 				{
-					$last_line = system($wget ." '".$urls_known["URL$current_url"]['url']."'", $retval);
+					$last_line = system($wget ." '".$urls_known["URL$current_url"]['url']."' ", $retval);
 					if (!$debug) $urls_known["URL$current_url"]['url'] = '-protected-';
 					if ($retval <> 0)
 					{
