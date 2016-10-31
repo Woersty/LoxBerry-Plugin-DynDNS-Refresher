@@ -1,8 +1,8 @@
 <?php
 // LoxBerry DynDNS-Refresher Plugin 
 // Christian Woerstenfeld - git@loxberry.woerstenfeld.de
-// Version 0.5
-// 31.10.2016 17:15:04
+// Version 0.6
+// 31.10.2016 18:12:38
 
 // Configuration parameters
 $psubdir          =array_pop(array_filter(explode('/',pathinfo($_SERVER["SCRIPT_FILENAME"],PATHINFO_DIRNAME))));
@@ -87,7 +87,7 @@ if (isset($configured_urls))
 	else
 	{
 		$wget  = $cfg_array["BINARIES"]["WGET"];
-		$wget .= " -q -t 1 -T 10 -O /dev/null ";
+		$wget .= " -t 1 -T 10 -O /dev/null ";
 	}
 	while(list($configured_urls_url_key,$configured_urls_url_data) = each($configured_urls))
 	  {
@@ -109,17 +109,18 @@ if (isset($configured_urls))
 				}
 				else
 				{
-					$last_line = system($wget ." '".$urls_known["URL$current_url"]['url']."' ", $retval);
+					exec($wget ." '".$urls_known["URL$current_url"]['url']."' >/dev/stdout 2>&1 ",$last_line,$retval);
+					$last_line = array_pop($last_line);
 					if (!$debug) $urls_known["URL$current_url"]['url'] = '-protected-';
 					if ($retval <> 0)
 					{
-						error_log( date('Y-m-d H:i:s ')."[Error] No update of ".$urls_known["URL$current_url"]['name']." with URL ".$urls_known["URL$current_url"]['url']."! Error $retval: $last_line [".$_SERVER["HTTP_REFERER"]."]\n", 3, $logfile);
+						error_log( date('Y-m-d H:i:s ')."[Error] No update of ".$urls_known["URL$current_url"]['name']." with URL ".$urls_known["URL$current_url"]['url']."! Error: $last_line [".$_SERVER["HTTP_REFERER"]."]\n", 3, $logfile);
+						$urls_known["URL$current_url"]['error'] = $last_line;
 					}
 					else
 					{ 
 						error_log( date('Y-m-d H:i:s ')."[OK] Successful update of ".$urls_known["URL$current_url"]['name']." with URL ".$urls_known["URL$current_url"]['url']." [".$_SERVER["HTTP_REFERER"]."]\n", 3, $logfile);
 					}
-					$urls_known["URL$current_url"]['error'] = $retval;
 				}
 			}
 		}
