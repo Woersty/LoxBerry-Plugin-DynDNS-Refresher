@@ -109,7 +109,7 @@ if (isset($configured_urls))
 				}
 				else
 				{
-					$last_line = system($wget ." ".$urls_known["URL$current_url"]['url'], $retval);
+					$last_line = system($wget ." '".$urls_known["URL$current_url"]['url']."'", $retval);
 					if (!$debug) $urls_known["URL$current_url"]['url'] = '-protected-';
 					if ($retval <> 0)
 					{
