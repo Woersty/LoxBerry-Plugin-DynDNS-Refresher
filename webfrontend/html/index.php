@@ -87,7 +87,7 @@ if (isset($configured_urls))
 	else
 	{
 		$wget  = $cfg_array["BINARIES"]["WGET"];
-		$wget .= " -t 2 -T 3 -O /dev/null 2>&1";
+		$wget .= " -t 1 -T 10 -O /dev/null 2>&1";
 	}
 	while(list($configured_urls_url_key,$configured_urls_url_data) = each($configured_urls))
 	  {
